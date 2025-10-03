@@ -1,0 +1,32 @@
+package com.mika.restful_web_services.versioning;
+
+public class Name {
+    private String firstName;
+    private String lastName;
+
+    public Name(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public void setFirstname(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastname(String lastName) {
+        this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "Person1[Firstname = " + this.firstName + " Firstname = " + this.lastName + " ]";
+    }
+}
