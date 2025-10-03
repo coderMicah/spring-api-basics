@@ -2,9 +2,12 @@ package com.mika.restful_web_services.exception;
 
 import java.time.LocalDateTime;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -29,4 +32,27 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
         return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.NOT_FOUND);
     }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
+
+        // Build a custom message
+        String message = String.format("Total errors: %d, First error: %s",
+                ex.getErrorCount(),
+                ex.getFieldError() != null ? ex.getFieldError().getDefaultMessage() : "N/A");
+
+        // Create ErrorDetails object
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                message,
+                request.getDescription(false));
+
+        // Return ResponseEntity with BAD_REQUEST
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
 }

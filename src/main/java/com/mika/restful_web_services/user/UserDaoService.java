@@ -3,6 +3,7 @@ package com.mika.restful_web_services.user;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.springframework.stereotype.Component;
@@ -31,6 +32,14 @@ public class UserDaoService {
     public User save(User user) {
         user.setId(++usersCount);
         users.add(user);
+        return user;
+    }
+
+    public Optional<User> deleteById(int id) {
+
+        Predicate<? super User> predicate = user -> user.getId().equals(id);
+        Optional<User> user = users.stream().filter(predicate).findFirst();
+        user.ifPresent(users::remove); // remove only if present
         return user;
     }
 }
